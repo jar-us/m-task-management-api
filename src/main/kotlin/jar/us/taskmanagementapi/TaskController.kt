@@ -16,5 +16,8 @@ class TaskController {
         return listOf("Task 1", "Task 2", "Task 3")
     }
 
-
+    @GetMapping("/admin/tasks")
+    fun getAdminTasks(): List<String> {
+        return listOf("Admin Task 1", "Admin Task 2")
+    }
 }

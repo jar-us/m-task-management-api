@@ -25,8 +25,9 @@ class SecurityConfig {
     fun securityFilterChain(http: HttpSecurity, jwtAuthenticationFilter: JwtAuthenticationFilter): SecurityFilterChain {
         http.csrf().disable()
             .authorizeHttpRequests {
-                it.requestMatchers("/api/auth/**").permitAll() // Public endpoints
-                    .anyRequest().authenticated() // Protect all other endpoints
+                it.requestMatchers("/api/auth/**", "/api/public/**").permitAll() // Public endpoints
+                    .requestMatchers("/api/admin/**").hasRole("ADMIN") // Admin-only endpoints
+                    .anyRequest().hasRole("USER") // All other endpoints require ROLE_USER
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
         return http.build()
